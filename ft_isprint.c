@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
-int ft_ispring(char const *str)
+int ft_isprint(char const *str)
 {
 	int i;
 	i = 0;
