@@ -1,63 +1,42 @@
-#include <stdlib.h>
 #include <unistd.h>
-#include <limits.h>
+#include <stdio.h>
 
-int skip(char *str)
+int	skip(char *str, int x)
 {
-    int r = 0;
-    while (str[r] && (str[r] == ' || str[r] =='\t' ||
-    str[r] == '\n' || str[r] == '\v' || str[r] == '\f' ||
-    str[r] == '\r'))
-        r++;
-    return r;
+	while (str[x] == ' ' || str[x] == '\t' || str[x] == '\n')
+		x++;
+	return (x);
 }
 
-int ft_atoi(const char *str)
+int	sigma(char *str, int x, int *sign)
 {
-    int x;
-    int sign;
-    int result;
+	while (str[x] == '+' || str[x] == '-')
+	{
+		if (str[x] == '-')
+		{
+			*sign = -*sign;
+		}
+		x++;
+	}
+	return (x);
+}
 
-    x = 0;
-    sign = 1;
-    result = 0;
+int	ft_atoi(char *str)
+{
+	int	result;
+	int	ptr;
+	int	sign;
 
-    if (str == NULL)
-    {
-        return -1; 
-    }
-
-    
-    x = skip(str);
-
-
-    if (str[x] == '-')
-    {
-        sign = -1;
-        x++;
-    }
-    else if (str[x] == '+')
-    {
-        x++;
-    }
-
-    while (str[x]!= '\0')
-    {
-        if (str[x] >= '0' && str[x] <= '9')
-        {
-            int digit = str[x] - '0';
-            if (result > INT_MAX / 10 || (result == INT_MAX / 10 && digit > INT_MAX % 10))
-            {
-                return -1; 
-            }
-            result = result * 10 + sign * digit;
-            x++;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    return result;
+	result = 0;
+	sign = 1;
+	ptr = 0;
+	ptr = skip(str, ptr);
+	ptr = sigma(str, ptr, &sign);
+	while (str[ptr] >= '0' && str[ptr] <= '9')
+	{
+		result = result * 10 + (str[ptr] - '0');
+		ptr++;
+	}
+	result *= sign;
+	return (result);
 }
