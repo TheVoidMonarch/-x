@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int ft_isascii(char const*str)
+int ft_isascii(char const *str)
 {
 	int i;
 
