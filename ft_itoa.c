@@ -1,34 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/28 15:14:47 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/28 15:30:00 by sbin-jef         ###   ########.fr       */
+/*   Created: 2024/06/28 15:16:57 by sbin-jef          #+#    #+#             */
+/*   Updated: 2024/06/28 16:00:44 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <stdlib.h>
 #include "libft.h"
 
-void	*ft_calloc(size_t count, size_t size)
+static size_t	get_num_len(int n)
 {
-	void			*ptr;
-	size_t			i;
-	unsigned char	*temp_ptr;
+	size_t	len;
 
-	ptr = malloc(count * size);
-	temp_ptr = (unsigned char *) ptr;
-	if (!ptr)
-		return (NULL);
-	i = 0;
-	while (i < count * size)
+	len = (n <= 0);
+	while (n)
 	{
-		temp_ptr[i] = 0;
-		i++;
+		n /= 10;
+		len++;
 	}
-	return (ptr);
+	return (len);
+}
+
+char	*ft_itoa(int n)
+{
+	char 			*str;
+	size_t 			len;
+	unsigned int	num;
+
+	len = get_num_len(n);
+	str = (char *)malloc(len + 1);
+	if (!str)
+		return (NULL);
+	str[len] = '\0';
+	num = (n < 0) ? -n : n;
+	while (len--)
+	{
+		str[len] = num % 10 + '0';
+		num /= 10;
+    }
+
+	if (n < 0)
+		str[0] = '-';
+	return (str);
 }
