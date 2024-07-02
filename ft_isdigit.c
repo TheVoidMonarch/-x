@@ -6,7 +6,7 @@
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 15:14:04 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/28 15:52:27 by sbin-jef         ###   ########.fr       */
+/*   Updated: 2024/06/30 05:22:40 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,9 @@
 #include <unistd.h>
 #include "libft.h"
 
-int	ft_isadigit(char const *str)
+int	ft_isdigit(char c)
 {
-	int	i;
-
-	i = 0;
-	if (str == NULL)
-	{
-		return (0);
-	}
-	if (str[i] == '\0')
-	{
-		return (0);
-	}
-	while (str[i] != '\0')
-	{
-		if (str[i] < '0' || str[i] > '9')
-		{
-			return (0);
-		}
-		i++;
-	}
-	return (1);
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }

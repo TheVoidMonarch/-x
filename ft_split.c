@@ -5,66 +5,90 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/28 15:18:11 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/28 15:18:12 by sbin-jef         ###   ########.fr       */
+/*   Created: 2024/06/30 03:41:22 by sbin-jef          #+#    #+#             */
+/*   Updated: 2024/07/02 12:41:16 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-static size_t count_words(char const *s, char c) {
-    size_t count = 0;
-    int in_word = 0;
+int	is_charset(char c, char *charset)
+{
+	if (!charset)
+		return (0);
+	int	index;
 
-    while (*s) {
-        if (*s != c && !in_word) {
-            in_word = 1;
-            count++;
-        } else if (*s == c) {
-            in_word = 0;
-        }
-        s++;
-    }
-    return count;
+	index = 0;
+	while (charset[index])
+	{
+		if (c == charset[index])
+			return (1);
+		index++;
+	}
+	return (0);
 }
 
-static char *word_dup(const char *start, size_t len) {
-    char *word = (char *)malloc(len + 1);
-    if (!word)
-        return NULL;
-    word[len] = '\0';
-    while (len--)
-        word[len] = start[len];
-    return word;
+int	get_length(char *str, char *charset)
+{
+	if (!str ||!charset)
+		return (0);
+	int	index;
+	int	word_count;
+
+	word_count = 0;
+	index = 0;
+	while (str[index])
+	{
+		if (str[index] &&!is_charset(str[index], charset))
+		{
+			word_count++;
+			while (str[index] &&!is_charset(str[index], charset))
+				index++;
+		}
+		else
+			index++;
+	}
+	return (word_count);
+}
+int	get_word_length(char *str, char *charset)
+{
+	if (!str || !charset)
+		return (0);
+	int	length;
+
+	length = 0;
+	while (str[length] && !is_charset(str[length], charset))
+		length++;
+	return (length);
 }
 
-char **ft_split(char const *s, char c) {
-    char **split;
-    size_t words, i, j, start;
+char	**ft_split(char *str, char *charset)
+{
+	if (!str || !charset)
+		return (NULL);
+	char	**output;
+	int		length;
+	int		index1;
+	int		index2;
 
-    if (!s)
-        return NULL;
-
-    words = count_words(s, c);
-    split = (char **)malloc((words + 1) * sizeof(char *));
-    if (!split)
-        return NULL;
-
-    i = 0;
-    j = 0;
-    while (i < words) {
-        while (s[j] == c)
-            j++;
-        start = j;
-        while (s[j] && s[j] != c)
-            j++;
-        split[i] = word_dup(s + start, j - start);
-        if (!split[i])
-            return NULL; // Memory allocation failed.
-        i++;
-    }
-    split[i] = NULL;
-
-    return split;
+	output = malloc(sizeof(char *) * (get_length(str, charset) + 1));
+	if (output == NULL)
+		return (NULL);
+	index1 = 0;
+	index2 = 0;
+	while (str[index1] && index2 < get_length(str, charset))
+	{
+		while (str[index1] && is_charset(str[index1], charset))
+			index1++;
+		length = get_word_length(str + index1, charset);
+		output[index2] = malloc(sizeof(char) * (length + 1)); 
+		if (output[index2] == NULL)
+			return (NULL);
+		ft_strlcpy(output[index2], str + index1, length + 1); 
+		index2++;
+		index1 += length;
+	}
+	output[index2] = NULL;
+	return (output);
 }

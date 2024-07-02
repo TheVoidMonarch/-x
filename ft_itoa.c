@@ -6,7 +6,7 @@
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 15:16:57 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/28 16:00:44 by sbin-jef         ###   ########.fr       */
+/*   Updated: 2024/06/29 23:33:47 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static size_t	get_num_len(int n)
 
 char	*ft_itoa(int n)
 {
-	char 			*str;
-	size_t 			len;
+	char			*str;
+	size_t			len;
 	unsigned int	num;
 
 	len = get_num_len(n);
@@ -37,13 +37,15 @@ char	*ft_itoa(int n)
 	if (!str)
 		return (NULL);
 	str[len] = '\0';
-	num = (n < 0) ? -n : n;
+	if (n < 0)
+		num = -n;
+	else
+		num = n;
 	while (len--)
 	{
 		str[len] = num % 10 + '0';
 		num /= 10;
-    }
-
+	}
 	if (n < 0)
 		str[0] = '-';
 	return (str);
