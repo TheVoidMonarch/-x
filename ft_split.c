@@ -11,84 +11,106 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft.h"
+/*#include <stdio.h>*/
 
-int	is_charset(char c, char *charset)
+static int		ft_wordcount(char const *str, char set)
 {
-	if (!charset)
-		return (0);
-	int	index;
+	int i;
+	int count;
 
-	index = 0;
-	while (charset[index])
+	if (str == 0 || str[0] == 0)
+		return (0);
+	i = 1;
+	count = 0;
+	if (str[0] != set)
+		count++;
+	while (str[i] != '\0')
 	{
-		if (c == charset[index])
-			return (1);
-		index++;
+		if (str[i] != set && str[i - 1] == set)
+			count++;
+		i++;
 	}
+	return (count);
+}
+
+static char		**ft_malloc(char const *str, char set)
+{
+	int		len;
+	char	**tab_str;
+
+	len = ft_wordcount(str, set);
+	tab_str = malloc(sizeof(*tab_str) * (len + 1));
+	if (tab_str == 0)
+	{
+		return (0);
+	}
+	return (tab_str);
+}
+
+static int		ft_next_word_count(char const *str, char set, int i)
+{
+	int count;
+
+	count = 0;
+	while (str[i] == set && str[i] != '\0')
+	{
+		i++;
+	}
+	while (str[i] != '\0' && str[i] != set)
+	{
+		count++;
+		i++;
+	}
+	return (count);
+}
+
+static char		**ft_free(char **str_tab, int i)
+{
+	int j;
+
+	j = 0;
+	while (j < i && str_tab[j] != 0)
+	{
+		free(str_tab[j]);
+		j++;
+	}
+	free(str_tab);
 	return (0);
 }
 
-int	get_length(char *str, char *charset)
+char			**ft_my_split(char const *str, char charset)
 {
-	if (!str ||!charset)
+	int		s;
+	int		i;
+	int		j;
+	char	**tab_str;
+
+	if (str == 0)
 		return (0);
-	int	index;
-	int	word_count;
-
-	word_count = 0;
-	index = 0;
-	while (str[index])
-	{
-		if (str[index] &&!is_charset(str[index], charset))
-		{
-			word_count++;
-			while (str[index] &&!is_charset(str[index], charset))
-				index++;
-		}
-		else
-			index++;
-	}
-	return (word_count);
-}
-int	get_word_length(char *str, char *charset)
-{
-	if (!str || !charset)
+	s = 0;
+	i = -1;
+	if (!(tab_str = ft_malloc(str, charset)))
 		return (0);
-	int	length;
-
-	length = 0;
-	while (str[length] && !is_charset(str[length], charset))
-		length++;
-	return (length);
-}
-
-char	**ft_split(char *str, char *charset)
-{
-	if (!str || !charset)
-		return (NULL);
-	char	**output;
-	int		length;
-	int		index1;
-	int		index2;
-
-	output = malloc(sizeof(char *) * (get_length(str, charset) + 1));
-	if (output == NULL)
-		return (NULL);
-	index1 = 0;
-	index2 = 0;
-	while (str[index1] && index2 < get_length(str, charset))
+	while (++i < ft_wordcount(str, charset))
 	{
-		while (str[index1] && is_charset(str[index1], charset))
-			index1++;
-		length = get_word_length(str + index1, charset);
-		output[index2] = malloc(sizeof(char) * (length + 1)); 
-		if (output[index2] == NULL)
-			return (NULL);
-		ft_strlcpy(output[index2], str + index1, length + 1); 
-		index2++;
-		index1 += length;
+		j = 0;
+		if (!(tab_str[i] = malloc(ft_next_word_count(str, charset, s) + 1)))
+			return (ft_free(tab_str, i));
+		while (str[s] != '\0' && str[s] == charset)
+			s++;
+		while (str[s] != '\0' && str[s] != charset)
+			tab_str[i][j++] = str[s++];
+		tab_str[i][j] = '\0';
 	}
-	output[index2] = NULL;
-	return (output);
+	tab_str[i] = 0;
+	return (tab_str);
 }
+
+/*int main() {
+    char **words = ft_my_split("hello,world,42,boi", ',');
+    for (int i = 0; words[i]; i++) {
+        printf("%s\n", words[i]);
+    }
+    ft_free(words, 4);
+    return 0;
+}*/
