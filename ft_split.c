@@ -78,7 +78,7 @@ static char		**ft_free(char **str_tab, int i)
 	return (0);
 }
 
-char			**ft_my_split(char const *str, char charset)
+char			**ft_split(char const *str, char charset)
 {
 	int		s;
 	int		i;
