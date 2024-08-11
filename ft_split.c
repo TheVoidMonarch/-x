@@ -5,112 +5,106 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/30 03:41:22 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/07/02 12:41:16 by sbin-jef         ###   ########.fr       */
+/*   Created: 2024/06/12 05:32:19 by sbin-jef          #+#    #+#             */
+/*   Updated: 2024/08/12 05:46:22 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-/*#include <stdio.h>*/
+#include "libft.h"
 
-static int		ft_wordcount(char const *str, char set)
+#include "libft.h"
+
+static int	wordcount(char const *str, char c);
+static char	*memory(char const *str, char c, int *k);
+static void	free_array(char **strs, int i);
+static void	ft_strcpy(char *dst, char const *src, char c, int j);
+
+char	**ft_split(char const *str, char c)
 {
-	int i;
-	int count;
-
-	if (str == 0 || str[0] == 0)
-		return (0);
-	i = 1;
-	count = 0;
-	if (str[0] != set)
-		count++;
-	while (str[i] != '\0')
-	{
-		if (str[i] != set && str[i - 1] == set)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-static char		**ft_malloc(char const *str, char set)
-{
-	int		len;
-	char	**tab_str;
-
-	len = ft_wordcount(str, set);
-	tab_str = malloc(sizeof(*tab_str) * (len + 1));
-	if (tab_str == 0)
-	{
-		return (0);
-	}
-	return (tab_str);
-}
-
-static int		ft_next_word_count(char const *str, char set, int i)
-{
-	int count;
-
-	count = 0;
-	while (str[i] == set && str[i] != '\0')
-	{
-		i++;
-	}
-	while (str[i] != '\0' && str[i] != set)
-	{
-		count++;
-		i++;
-	}
-	return (count);
-}
-
-static char		**ft_free(char **str_tab, int i)
-{
-	int j;
-
-	j = 0;
-	while (j < i && str_tab[j] != 0)
-	{
-		free(str_tab[j]);
-		j++;
-	}
-	free(str_tab);
-	return (0);
-}
-
-char			**ft_split(char const *str, char charset)
-{
-	int		s;
+	char	**strs;
 	int		i;
 	int		j;
-	char	**tab_str;
+	int		pos;
 
-	if (str == 0)
-		return (0);
-	s = 0;
-	i = -1;
-	if (!(tab_str = ft_malloc(str, charset)))
-		return (0);
-	while (++i < ft_wordcount(str, charset))
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	pos = 0;
+	j = wordcount(str, c);
+	strs = (char **)malloc(sizeof(char *) * (j + 1));
+	if (strs == NULL)
+		return (NULL);
+	strs[j] = NULL;
+	while (i < j)
 	{
-		j = 0;
-		if (!(tab_str[i] = malloc(ft_next_word_count(str, charset, s) + 1)))
-			return (ft_free(tab_str, i));
-		while (str[s] != '\0' && str[s] == charset)
-			s++;
-		while (str[s] != '\0' && str[s] != charset)
-			tab_str[i][j++] = str[s++];
-		tab_str[i][j] = '\0';
+		strs[i] = memory(str, c, &pos);
+		if (strs[i] == NULL)
+		{
+			free_array(strs, i - 1);
+			return (NULL);
+		}
+		i++;
 	}
-	tab_str[i] = 0;
-	return (tab_str);
+	return (strs);
 }
 
-/*int main() {
-    char **words = ft_my_split("hello,world,42,boi", ',');
-    for (int i = 0; words[i]; i++) {
-        printf("%s\n", words[i]);
-    }
-    ft_free(words, 4);
-    return 0;
-}*/
+static int	wordcount(char const *str, char c)
+{
+	int	i;
+	int	word;
+
+	i = 0;
+	word = 0;
+	while (str[i] != '\0')
+	{
+		if ((i == 0 || str[i - 1] == c) && str[i] != c)
+			word++;
+		i++;
+	}
+	return (word);
+}
+
+void	ft_strcpy(char *dst, char const *src, char c, int start)
+{
+	int	i;
+
+	i = 0;
+	while (src[start + i] != c && src[start + i] != '\0')
+	{
+		dst[i] = src[start + i];
+		i++;
+	}
+	dst[i] = '\0';
+}
+
+static char	*memory(char const *str, char c, int *k)
+{
+	char	*word;
+	int		j;
+	int		len;
+
+	j = *k;
+	while (str[j] == c)
+		j++;
+	len = 0;
+	while (str[j + len] != c && str[j + len] != '\0')
+		len++;
+	word = malloc(sizeof(char) * (len + 1));
+	if (word == NULL)
+		return (NULL);
+	ft_strcpy(word, str, c, j);
+	*k += len + 1;
+	while (*k < (int)strlen(str) && str[*k] == c)
+		(*k)++;
+	return (word);
+}
+
+static void	free_array(char **strs, int i)
+{
+	while (i >= 0 && strs[i] != NULL)
+	{
+		free(strs[i]);
+		i--;
+	}
+	free(strs);
+}

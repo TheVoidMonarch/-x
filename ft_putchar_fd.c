@@ -6,13 +6,14 @@
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 15:17:24 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/28 15:17:26 by sbin-jef         ###   ########.fr       */
+/*   Updated: 2024/08/11 21:52:24 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libft.h"
 
-void ft_putchar_fd(char c, int fd) {
-    write(fd, &c, 1);
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
 }

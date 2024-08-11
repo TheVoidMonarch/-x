@@ -6,43 +6,27 @@
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 05:45:18 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/30 05:47:52 by sbin-jef         ###   ########.fr       */
+/*   Updated: 2024/08/11 23:20:31 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int fstrlen(char *str);
-unsigned int	ft_strlcat(char *dest, char *src, unsigned int size)
-{
-    unsigned int	v;
-    unsigned int	c;
-    unsigned int	x;
+#include "libft.h"
 
-    if (dest == 0 || src == 0)
-        return 0;
-    x = 0;
-    v = fstrlen(dest);
-    c = fstrlen(src);
-    if (size <= v)
-        return (size + c);
-    if (size == 0)
-        return c;
-    while (src[x]!= '\0' && v < size - 1)
-    {
-        dest[v] = src[x];
-        v++;
-        x++;
-    }
-    dest[v] = '\0';
-    return (v + c - fstrlen(dest));
-}
-
-unsigned int fstrlen(char *str)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-    unsigned int len = 0;
-    while (*str!= '\0')
-    {
-        len++;
-        str++;
-    }
-    return len;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (dst[i] && i < size)
+		i++;
+	while (src[j] && (i + j + 1) < size)
+	{
+		dst[i + j] = src[j];
+		j++;
+	}
+	if (i < size)
+		dst[i + j] = '\0';
+	return (i + ft_strlen(src));
 }

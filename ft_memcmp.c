@@ -6,7 +6,7 @@
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 15:16:01 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/28 15:16:03 by sbin-jef         ###   ########.fr       */
+/*   Updated: 2024/08/11 21:44:17 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,29 @@
 #include "libft.h"
 /*#include <stdio.h>*/
 
-int ft_memcmp(const void *str1, const void *str2, size_t n)
+int	ft_memcmp(void *str1, void *str2, size_t n)
 {
-    const unsigned char *ptr1;
-    const unsigned char *ptr2;
+	unsigned char	*ptr1;
+	unsigned char	*ptr2;
 
-    ptr1 = (const unsigned char *)str1;
-    ptr2 = (const unsigned char *)str2;
-    if (ptr1 == NULL || ptr2 == NULL)
-    {
-        return -1;
-    }
-    while (n--)
-    {
-        if (*ptr1 != *ptr2)
-        {
-            return (*ptr1 - *ptr2);
-        }
-        ptr1++;
-        ptr2++;
-    }
-    return (0);
+	ptr1 = (unsigned char *)str1;
+	ptr2 = (unsigned char *)str2;
+	if (ptr1 == NULL || ptr2 == NULL)
+	{
+		return (-1);
+	}
+	if (n == 0)
+		return (0);
+	while (n--)
+	{
+		if (*ptr1 != *ptr2)
+		{
+			return (*ptr1 - *ptr2);
+		}
+		ptr1++;
+		ptr2++;
+	}
+	return (0);
 }
 
 /*

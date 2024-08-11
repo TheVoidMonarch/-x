@@ -6,7 +6,7 @@
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 15:19:51 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/28 15:19:53 by sbin-jef         ###   ########.fr       */
+/*   Updated: 2024/08/12 03:13:43 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,24 @@
 #include <stddef.h>
 #include "libft.h"
 
-char	*ft_strnstr(const char *str, const char *to_find, size_t n)
+const char	*ft_strnstr(const char *str, const char *to_find, size_t n)
 {
+	size_t	x;
+	size_t	y;
+
 	if (str == NULL)
+		return (NULL);
+	if (*to_find == '\0')
+		return (str);
+	x = 0;
+	while (str[x] && x < n)
 	{
-		return(NULL);
+		y = 0;
+		while (str[x + y] == to_find[y] && to_find[y] && (x + y) < n)
+			y++;
+		if (to_find[y] == '\0')
+			return (&str[x]);
+		x++;
 	}
-	
-    size_t x;
-    size_t z;
-
-    if (*to_find == '\0')
-        return (char *)str;
-
-    x = 0;
-    while (str[x] && x < n)
-    {
-        z = 0;
-        while (str[x + z] == to_find[z] && to_find[z] && (x + z) < n)
-            z++;
-        if (to_find[z] == '\0')
-            return (char *)&str[x];
-        x++;
-    }
-    return NULL;
+	return (NULL);
 }

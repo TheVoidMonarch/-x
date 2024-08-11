@@ -6,11 +6,12 @@
 /*   By: sbin-jef <sbin-jef@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 05:06:39 by sbin-jef          #+#    #+#             */
-/*   Updated: 2024/06/30 05:22:08 by sbin-jef         ###   ########.fr       */
+/*   Updated: 2024/08/11 21:30:59 by sbin-jef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
 int	ft_isalpha(char c)
 {
 	if (c == '\0')
